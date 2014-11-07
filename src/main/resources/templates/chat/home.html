@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Sample Chat Application</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.0/css/bootstrap.min.css}" href="../../css/bootstrap.css" />
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.0/css/bootstrap-theme.min.css}" href="../../css/bootstrap-theme.css" />
+    <link rel="stylesheet" th:href="@{/css/application.css}" href="../../static/css/application.css" />
+    <script th:src="@{/webjars/jquery/2.1.0/jquery.min.js}" src="../../static/js/chatapp.js" > </script>
+    <script th:src="@{/webjars/bootstrap/3.3.0/js/bootstrap.min.js}" src="../../static/js/chatapp.js" > </script>
+    <script th:src="@{/webjars/angularjs/1.3.0-beta.11/angular.min.js}" src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js" > </script>
+    <script th:src="@{/webjars/angular-ui-router/0.2.8/angular-ui-router.min.js}" src="#"></script>
+    <script th:src="@{/js/sockjs-0.3.4.js}" src="../../static/js/sockjs-0.3.4.js"> </script>
+    <script th:src="@{/js/stomp.js}" src="../../static/js/stomp.js"> </script>
+    <script th:src="@{/js/chatapp.js}" src="../../static/js/chatapp.js" > </script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var URLS = {};
+        URLS.chatWSEndpoint = /*[[@{/chat}]]*/ '/chat';
+        URLS.appChats = /*[[@{/app/chats}]]*/ '/app/chats';
+        URLS.userChats = /*[[@{/user/queue/chats}]]*/ '/user/queue/chats';
+        URLS.roomChats = /*[[@{/topic/chats}]]*/ '/topic/chats';
+        URLS.partialsChats = /*[[@{/partialsChats}]]*/ '/partialsChats';
+        URLS.partialsRooms = /*[[@{/partialsRooms}]]*/ '/partialsRooms';
+        /*]]>*/
+    </script>
+</head>
+<body ng-app="chatApp" >
+<!-- Static navbar -->
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Sample Chat App</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome <span th:text="${user}">User</span> <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a th:href="@{/logout}">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container-fluid">
+
+    <div class="ui-view" autoscroll="false">
+    </div>
+
+
+</div>
+</body>
+</html>

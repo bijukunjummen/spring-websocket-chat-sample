@@ -1,5 +1,6 @@
 package bk.chat.config;
 
+import bk.chat.web.interceptors.HttpSessionIdHandshakeInterceptor;
 import bk.chat.web.interceptors.SessionKeepAliveChannelInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,13 +28,13 @@ public class WebSocketDefaultConfig extends AbstractWebSocketMessageBrokerConfig
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/chat").withSockJS();//.setInterceptors(httpSessionIdHandshakeInterceptor());
+		registry.addEndpoint("/chat").withSockJS().setInterceptors(httpSessionIdHandshakeInterceptor());
 	}
 
-//	@Bean
-//	public HttpSessionIdHandshakeInterceptor httpSessionIdHandshakeInterceptor() {
-//		return new HttpSessionIdHandshakeInterceptor();
-//	}
+	@Bean
+	public HttpSessionIdHandshakeInterceptor httpSessionIdHandshakeInterceptor() {
+		return new HttpSessionIdHandshakeInterceptor();
+	}
 
 	@Bean
 	public SessionKeepAliveChannelInterceptor sessionKeepAliveChannelInterceptor() {

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @ManagedResource
-@Component
+//@Component
 public class SessionRepositoryMBean {
 
 	@Autowired

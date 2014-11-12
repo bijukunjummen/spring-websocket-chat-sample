@@ -96,7 +96,7 @@ app.controller("ChatCtrl", function ($rootScope, $scope, $stateParams) {
             console.log("Error : " + err);
             $scope.setConnected(false);
         });
-        $scope.socket.client.onclose = $scope.reconnect;
+        $scope.socket.client.onclose = $scope.onclose;
     };
 
     $scope.setErrorMessage = function (message) {
@@ -115,9 +115,9 @@ app.controller("ChatCtrl", function ($rootScope, $scope, $stateParams) {
         });
     };
 
-    $scope.reconnect = function () {
+    $scope.onclose = function () {
         $scope.setConnected(false);
-        setTimeout($scope.initSockets, 10000);
+        //setTimeout($scope.initSockets, 10000);
     };
 
     $scope.submitGreeting = function (chatmessage) {

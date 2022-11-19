@@ -1,6 +1,5 @@
 package bk.chat.web.interceptors;
 
-import bk.chat.web.listeners.WSConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.server.ServerHttpRequest;
@@ -23,7 +22,7 @@ public class HttpSessionIdHandshakeInterceptor implements HandshakeInterceptor {
 			ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request;
 			HttpSession session = servletRequest.getServletRequest().getSession(false);
 			if (session != null) {
-				attributes.put(WSConstants.SESSION_ATTR, session.getId());
+				attributes.put("sessionId", session.getId());
 			}
 		}
 		return true;

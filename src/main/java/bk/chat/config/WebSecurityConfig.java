@@ -1,48 +1,69 @@
 
 package bk.chat.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
 @Configuration
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/img/**").permitAll()
+                .antMatchers("/css/**").permitAll()
+                .antMatchers("/js/**").permitAll()
+                .antMatchers("/webjars/**").permitAll()
+                .antMatchers("/chat/info**").permitAll()
+                .antMatchers("/chat**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .logout()
+                .logoutSuccessUrl("/login?logout")
+                .logoutUrl("/logout")
+                .permitAll()
+                .and()
+                .formLogin()
+                .defaultSuccessUrl("/")
+                .loginPage("/login")
+                .failureUrl("/login?error")
+                .permitAll();
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http
-			.csrf().disable()
-			.authorizeRequests()
-				.antMatchers("/img/**").permitAll()
-				.antMatchers("/css/**").permitAll()
-				.antMatchers("/js/**").permitAll()
-				.antMatchers("/webjars/**").permitAll()
-				.antMatchers("/chat/info**").permitAll()
-				.antMatchers("/chat**").permitAll()
-				.anyRequest().authenticated()
-				.and()
-			.logout()
-				.logoutSuccessUrl("/login?logout")
-				.logoutUrl("/logout")
-				.permitAll()
-				.and()
-			.formLogin()
-				.defaultSuccessUrl("/")
-				.loginPage("/login")
-				.failureUrl("/login?error")
-				.permitAll();
-	}
+        return http.build();
+    }
 
+    @Bean
+    public UserDetailsService userDetailsService() {
+        UserDetails user1 =
+                User.withDefaultPasswordEncoder()
+                        .username("user1")
+                        .password("user1")
+                        .roles("USER")
+                        .build();
+        UserDetails user2 =
+                User.withDefaultPasswordEncoder()
+                        .username("user2")
+                        .password("user2")
+                        .roles("USER")
+                        .build();
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth
-			.inMemoryAuthentication()
-				.withUser("user1").password("user1").roles("USER").and()
-				.withUser("user2").password("user2").roles("USER").and()
-				.withUser("user3").password("user3").roles("ADMIN","USER");
-	}
+        UserDetails user3 =
+                User.withDefaultPasswordEncoder()
+                        .username("user3")
+                        .password("user3")
+                        .roles("USER", "ADMIN")
+                        .build();
+
+        return new InMemoryUserDetailsManager(user1, user2, user3);
+    }
+
 }

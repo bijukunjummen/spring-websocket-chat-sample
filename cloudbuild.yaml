@@ -1,0 +1,35 @@
+steps:
+  - name: eclipse-temurin:17.0.4.1_1-jdk
+    id: test
+    entrypoint: "/bin/bash"
+    args:
+      - '-c'
+      - |-
+        ./gradlew check
+  - name: "us-west1-docker.pkg.dev/$PROJECT_ID/sample-repo/skaffold:latest"
+    id: build-image
+    entrypoint: "/bin/bash"
+    args:
+      - '-c'
+      - |-
+        set -x
+        ./mvnw jib:dockerBuild --image us-west1-docker.pkg.dev/$PROJECT_ID/sample-repo/spring-websocket-chat-sample:$SHORT_SHA
+  #        skaffold build --interactive=false --default-repo=us-west1-docker.pkg.dev/$PROJECT_ID/sample-repo --file-output artifacts.json --tag=$SHORT_SHA
+
+#  - name: 'gcr.io/cloud-builders/gcloud'
+#    id: trigger-deploy
+#    args: [ "deploy",
+#            "releases",
+#            "create",
+#            "release-$SHORT_SHA",
+#            "--delivery-pipeline",
+#            "clouddeploy-cloudrun-sample",
+#            "--region", "us-west1",
+#            "--images=clouddeploy-cloudrun-app-image=us-west1-docker.pkg.dev/$PROJECT_ID/sample-repo/clouddeploy-cloudrun-app-image:$SHORT_SHA"
+#      #            "--build-artifacts",
+#      #            "artifacts.json"
+#    ]
+images:
+  - us-west1-docker.pkg.dev/$PROJECT_ID/sample-repo/spring-websocket-chat-sample:$SHORT_SHA
+options:
+  requestedVerifyOption: VERIFIED

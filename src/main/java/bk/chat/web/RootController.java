@@ -13,6 +13,6 @@ public class RootController {
 		if (authentication!=null) {
 			model.addAttribute("user", authentication.getName());
 		}
-		return "chat/home";
+		return "chatpage";
 	}
 }

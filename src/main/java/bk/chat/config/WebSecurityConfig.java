@@ -24,7 +24,7 @@ public class WebSecurityConfig {
                 .antMatchers("/js/**").permitAll()
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/chat/info**").permitAll()
-                .antMatchers("/chat**").permitAll()
+                .antMatchers("/chat/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .logout()
@@ -33,7 +33,7 @@ public class WebSecurityConfig {
                 .permitAll()
                 .and()
                 .formLogin()
-                .defaultSuccessUrl("/")
+                .defaultSuccessUrl("/chatpage")
                 .loginPage("/login")
                 .failureUrl("/login?error")
                 .permitAll();

@@ -1,8 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title>Sign in</title>
+    <title>Chats</title>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.2/css/bootstrap.min.css}"/>
+    <script src="/webjars/bootstrap/5.2.2/js/bootstrap.min.js"></script>
+    <script src="/webjars/jquery/3.6.1/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/2.3.4/stomp.min.js"></script>
+
+    <script src="/js/chat.js"></script>
     <link rel="stylesheet" href="/css/index.css"/>
 </head>
 <body>
@@ -21,7 +27,9 @@
             </ul>
         </div>
         <ul class="navbar-nav">
-            <li class="nav-item"><span class="navbar-text">Welcome <span th:text="${user}">User</span></span></li>
+            <li class="nav-item"><span class="navbar-text">Welcome <span sec:authentication="name">User</span></span></li>
+        </ul>
+        <ul class="navbar-nav">
             <li class="nav-item"><a class="nav-link" th:href="@{/logout}">Logout</a></li>
         </ul>
     </nav>
@@ -35,18 +43,27 @@
             <div class="col-sm-10 offset-sm-1">
                 <div class="row">
                     <div class="col-sm-4">
-                        <form role="form" onsubmit="submitGreeting(chatmessage)">
-                            <div class="form-group">
-                                <label for="greeting">Message</label>
-                                <input type="text" class="form-control" id="greeting" placeholder="Enter Greeting"/>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="button" id="connect" class="btn btn-success" value="Connect"></input>
                             </div>
-                            <input type="submit" class="btn btn-default" value="Submit"/>
-                            <div ng-if="connected"><span class="label label-success">Connected</span></div>
-                            <div ng-if="!connected"><span class="label label-danger">Not Connected</span></div>
+                            <div class="col-sm-6">
+                                <input type="button" id="disconnect" class="btn btn-danger" value="Disconnect"></input>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <form role="form" onsubmit="sendMessage()">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="msg" placeholder="Enter Message"/>
+                            </div>
+                            <input type="submit" class="btn btn-primary" value="Submit"/>
                         </form>
                     </div>
                     <div class="col-sm-8">
-                        <textarea class="form-control" rows="10">hello world</textarea>
+                        <textarea class="form-control" rows="10" id="messages"></textarea>
                     </div>
                 </div>
             </div>

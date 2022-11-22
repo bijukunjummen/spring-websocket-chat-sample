@@ -5,7 +5,7 @@ steps:
     args:
       - '-c'
       - |-
-        ./gradlew check
+        ./mvnw test
   - name: "us-west1-docker.pkg.dev/$PROJECT_ID/sample-repo/skaffold:latest"
     id: build-image
     entrypoint: "/bin/bash"

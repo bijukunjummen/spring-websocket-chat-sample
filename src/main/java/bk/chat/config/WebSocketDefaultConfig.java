@@ -12,20 +12,22 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketDefaultConfig implements WebSocketMessageBrokerConfigurer {
 
-	@Override
-	public void configureMessageBroker(MessageBrokerRegistry config) {
+    @Override
+    public void configureMessageBroker(MessageBrokerRegistry config) {
 //		config.enableStompBrokerRelay("/queue", "/topic/");
-		config.enableSimpleBroker("/topic/", "/queue/");
-		config.setApplicationDestinationPrefixes("/app");
-	}
+        config.enableSimpleBroker("/topic/", "/queue/");
+        config.setApplicationDestinationPrefixes("/app");
+    }
 
-	@Override
-	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/chat").withSockJS().setInterceptors(httpSessionIdHandshakeInterceptor());
-	}
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/chat")
+                .setAllowedOrigins("*")
+                .withSockJS().setInterceptors(httpSessionIdHandshakeInterceptor());
+    }
 
-	@Bean
-	public HttpSessionIdHandshakeInterceptor httpSessionIdHandshakeInterceptor() {
-		return new HttpSessionIdHandshakeInterceptor();
-	}
+    @Bean
+    public HttpSessionIdHandshakeInterceptor httpSessionIdHandshakeInterceptor() {
+        return new HttpSessionIdHandshakeInterceptor();
+    }
 }

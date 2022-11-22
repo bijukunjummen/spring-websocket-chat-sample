@@ -13,7 +13,7 @@ steps:
       - '-c'
       - |-
         set -x
-        ./mvnw jib:dockerBuild --image us-west1-docker.pkg.dev/$PROJECT_ID/sample-repo/spring-websocket-chat-sample:$SHORT_SHA
+        ./mvnw jib:dockerBuild -Dimage us-west1-docker.pkg.dev/$PROJECT_ID/sample-repo/spring-websocket-chat-sample:$SHORT_SHA
   #        skaffold build --interactive=false --default-repo=us-west1-docker.pkg.dev/$PROJECT_ID/sample-repo --file-output artifacts.json --tag=$SHORT_SHA
 
 #  - name: 'gcr.io/cloud-builders/gcloud'

@@ -18,26 +18,33 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/img/**").permitAll()
-                .antMatchers("/css/**").permitAll()
-                .antMatchers("/js/**").permitAll()
-                .antMatchers("/webjars/**").permitAll()
-                .antMatchers("/chat/info**").permitAll()
-                .antMatchers("/chat/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .logout()
-                .logoutSuccessUrl("/login?logout")
-                .logoutUrl("/logout")
-                .permitAll()
-                .and()
-                .formLogin()
-                .defaultSuccessUrl("/chatpage")
-                .loginPage("/login")
-                .failureUrl("/login?error")
-                .permitAll();
+                .authorizeHttpRequests(request -> {
+                            try {
+                                request
+                                        .requestMatchers("/img/**").permitAll()
+                                        .requestMatchers("/css/**").permitAll()
+                                        .requestMatchers("/js/**").permitAll()
+                                        .requestMatchers("/webjars/**").permitAll()
+                                        .requestMatchers("/chat/info**").permitAll()
+                                        .requestMatchers("/chat/**").permitAll()
+                                        .anyRequest().authenticated()
+                                        .and()
+                                        .logout(c ->
+                                                c.logoutSuccessUrl("/login?logout")
+                                                        .logoutUrl("/logout")
+                                                        .permitAll()
+                                        )
+                                        .formLogin()
+                                        .defaultSuccessUrl("/chatpage")
+                                        .loginPage("/login")
+                                        .failureUrl("/login?error")
+                                        .permitAll();
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
 
+                );
         return http.build();
     }
 
